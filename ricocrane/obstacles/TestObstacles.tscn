@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://btest00001"]
+
+[ext_resource type="PackedScene" uid="uid://bmine00001" path="res://obstacles/Mine.tscn" id="1_mine01"]
+[ext_resource type="PackedScene" uid="uid://bbuoy00001" path="res://obstacles/Buoy.tscn" id="2_buoy01"]
+[ext_resource type="PackedScene" uid="uid://bwhirl0001" path="res://obstacles/Whirlpool.tscn" id="3_whirl1"]
+[ext_resource type="PackedScene" uid="uid://bghost0001" path="res://obstacles/GhostJetski.tscn" id="4_ghost1"]
+
+[node name="TestObstacles" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(500.0, 300.0)
+zoom = Vector2(1.2, 1.2)
+
+[node name="Mine" parent="." instance=ExtResource("1_mine01")]
+position = Vector2(150.0, 300.0)
+
+[node name="Buoy" parent="." instance=ExtResource("2_buoy01")]
+position = Vector2(350.0, 300.0)
+
+[node name="Whirlpool" parent="." instance=ExtResource("3_whirl1")]
+position = Vector2(580.0, 300.0)
+
+[node name="GhostJetski" parent="." instance=ExtResource("4_ghost1")]
+position = Vector2(800.0, 300.0)
