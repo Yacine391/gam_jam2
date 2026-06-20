@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bmine00001"]
+
+[ext_resource type="Script" path="res://obstacles/mine.gd" id="1_mine01"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mine"]
+radius = 22.0
+
+[node name="Mine" type="Node2D"]
+script = ExtResource("1_mine01")
+
+[node name="HitArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea"]
+shape = SubResource("CircleShape2D_mine")
