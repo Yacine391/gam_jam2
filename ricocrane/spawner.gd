@@ -10,6 +10,8 @@ extends Node
 @export var max_gap: float = 330.0
 @export var min_y: float = 300.0
 @export var max_y: float = 460.0
+@export var obstacle_min_y: float = 455.0
+@export var obstacle_max_y: float = 485.0
 @export var obstacle_start_distance: float = 800.0
 @export var obstacle_chance: float = 0.28
 
@@ -47,7 +49,7 @@ func _spawn_ahead(player_x: float) -> void:
 			var obs_scene: PackedScene = obstacle_scenes[randi() % obstacle_scenes.size()]
 			var obs: Obstacle = obs_scene.instantiate() as Obstacle
 			var gap: float = randf_range(60.0, 140.0)
-			obs.position = Vector2(_next_spawn_x + gap, randf_range(min_y, max_y))
+			obs.position = Vector2(_next_spawn_x + gap, randf_range(obstacle_min_y, obstacle_max_y))
 			_obstacle_container.add_child(obs)
 
 		_next_spawn_x += randf_range(min_gap, max_gap)

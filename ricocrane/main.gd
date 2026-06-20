@@ -72,17 +72,34 @@ func _draw() -> void:
 	# Ciel
 	draw_rect(Rect2(cx - margin, -800.0, margin * 2.0, wy + 800.0), Color(0.42, 0.72, 1.0))
 
-	# Mer
-	draw_rect(Rect2(cx - margin, wy, margin * 2.0, 600.0), Color(0.0, 0.32, 0.82))
+	# Mer — gradient sur 4 bandes
+	draw_rect(Rect2(cx - margin, wy, margin * 2.0, 150.0), Color(0.0, 0.38, 0.88))
+	draw_rect(Rect2(cx - margin, wy + 150.0, margin * 2.0, 150.0), Color(0.0, 0.28, 0.75))
+	draw_rect(Rect2(cx - margin, wy + 300.0, margin * 2.0, 300.0), Color(0.0, 0.18, 0.58))
 
-	# Vagues animées
+	# Vague de fond (lente, large)
 	var steps: int = 48
+	var wave_bg: PackedVector2Array = PackedVector2Array()
+	for i: int in range(steps + 1):
+		var x: float = cx - margin + (margin * 2.0 * float(i) / float(steps))
+		var y: float = wy + sin(x * wave_frequency * 0.6 + _wave_time * wave_speed * 0.5) * wave_amplitude * 1.4
+		wave_bg.append(Vector2(x, y))
+	draw_polyline(wave_bg, Color(0.2, 0.55, 0.95, 0.45), 6.0)
+
+	# Vague principale
 	var wave_pts: PackedVector2Array = PackedVector2Array()
 	for i: int in range(steps + 1):
 		var x: float = cx - margin + (margin * 2.0 * float(i) / float(steps))
 		var y: float = wy + sin(x * wave_frequency + _wave_time * wave_speed) * wave_amplitude
 		wave_pts.append(Vector2(x, y))
-	draw_polyline(wave_pts, Color(0.55, 0.85, 1.0, 0.9), 3.0)
+	draw_polyline(wave_pts, Color(0.65, 0.92, 1.0, 0.95), 3.0)
+
+	# Ecumes (petits reflets blancs sur les cretes)
+	for i: int in range(0, steps, 4):
+		var x: float = cx - margin + (margin * 2.0 * float(i) / float(steps))
+		var y: float = wy + sin(x * wave_frequency + _wave_time * wave_speed) * wave_amplitude
+		if sin(x * wave_frequency + _wave_time * wave_speed) > 0.6:
+			draw_circle(Vector2(x, y - 2.0), 3.0, Color(1.0, 1.0, 1.0, 0.6))
 
 func _check_skull_bounces() -> void:
 	if player.velocity_y <= 0.0:
