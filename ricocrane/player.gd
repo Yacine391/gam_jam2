@@ -4,16 +4,16 @@ extends Node2D
 # --- TUNING ---
 @export var initial_speed: float = 220.0
 @export var friction: float = 18.0
-@export var min_speed: float = 50.0
+@export var minimum_drift: float = 40.0
 @export var gravity: float = 700.0
 @export var water_bounce_damping: float = 0.25
 @export var dive_force: float = 480.0
 @export var water_line_y: float = 500.0
 @export var player_width: float = 52.0
 @export var player_height: float = 22.0
-@export var bounce_boost_min: float = 130.0
-@export var bounce_boost_max: float = 260.0
-@export var bounce_vertical_multiplier: float = 2.2
+@export var bounce_boost_min: float = 160.0
+@export var bounce_boost_max: float = 300.0
+@export var bounce_vertical_multiplier: float = 3.0
 
 var current_speed: float = 0.0
 var velocity_y: float = 0.0
@@ -28,7 +28,7 @@ func reset() -> void:
 	_on_water = false
 
 func physics_step(delta: float) -> void:
-	current_speed = maxf(0.0, current_speed - friction * delta)
+	current_speed = maxf(minimum_drift, current_speed - friction * delta)
 	position.x += current_speed * delta
 
 	velocity_y += gravity * delta

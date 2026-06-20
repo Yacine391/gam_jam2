@@ -8,6 +8,10 @@ signal bounced(is_perfect: bool)
 signal combo_changed(combo: int)
 signal combo_lost
 
+# --- TUNING ---
+const POINTS_PER_BOUNCE: float = 100.0
+const PERFECT_MULTIPLIER: float = 2.0
+
 enum State { IDLE, PLAYING, DEAD }
 
 var state: State = State.IDLE
@@ -26,8 +30,6 @@ func add_distance(d: float) -> void:
 	if state != State.PLAYING:
 		return
 	distance += d
-	score = distance * maxf(1.0, float(combo))
-	score_changed.emit(score)
 
 func report_speed(speed: float) -> void:
 	if state != State.PLAYING:
@@ -38,6 +40,11 @@ func register_bounce(is_perfect: bool) -> void:
 	if state != State.PLAYING:
 		return
 	combo += 1
+	var points: float = POINTS_PER_BOUNCE * float(combo)
+	if is_perfect:
+		points *= PERFECT_MULTIPLIER
+	score += points
+	score_changed.emit(score)
 	combo_changed.emit(combo)
 	bounced.emit(is_perfect)
 
