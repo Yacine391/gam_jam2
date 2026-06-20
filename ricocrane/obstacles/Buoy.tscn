@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bbuoy00001"]
+
+[ext_resource type="Script" path="res://obstacles/buoy.gd" id="1_buoy01"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_buoy"]
+size = Vector2(18.0, 36.0)
+
+[node name="Buoy" type="Node2D"]
+script = ExtResource("1_buoy01")
+
+[node name="HitArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea"]
+shape = SubResource("RectangleShape2D_buoy")
