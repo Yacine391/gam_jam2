@@ -1,10 +1,12 @@
 extends Node
 
 signal game_started
-signal game_over
+signal game_over(final_score: float)
 signal score_changed(score: float)
-signal combo_changed(combo: int)
+signal speed_changed(speed: float)
 signal bounced(is_perfect: bool)
+signal combo_changed(combo: int)
+signal combo_lost
 
 enum State { IDLE, PLAYING, DEAD }
 
@@ -27,6 +29,11 @@ func add_distance(d: float) -> void:
 	score = distance * maxf(1.0, float(combo))
 	score_changed.emit(score)
 
+func report_speed(speed: float) -> void:
+	if state != State.PLAYING:
+		return
+	speed_changed.emit(speed)
+
 func register_bounce(is_perfect: bool) -> void:
 	if state != State.PLAYING:
 		return
@@ -39,9 +46,10 @@ func reset_combo() -> void:
 		return
 	combo = 0
 	combo_changed.emit(combo)
+	combo_lost.emit()
 
 func trigger_game_over() -> void:
 	if state == State.DEAD:
 		return
 	state = State.DEAD
-	game_over.emit()
+	game_over.emit(score)

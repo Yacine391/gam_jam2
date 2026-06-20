@@ -6,11 +6,13 @@ extends CanvasLayer
 @onready var combo_label: Label = $ComboLabel
 @onready var perfect_label: Label = $PerfectLabel
 @onready var game_over_panel: Control = $GameOverPanel
+@onready var game_over_label: Label = $GameOverPanel/GameOverLabel
 
 var _perfect_timer: float = 0.0
 
 func _ready() -> void:
 	GameState.score_changed.connect(_on_score_changed)
+	GameState.speed_changed.connect(_on_speed_changed)
 	GameState.combo_changed.connect(_on_combo_changed)
 	GameState.bounced.connect(_on_bounced)
 	GameState.game_over.connect(_on_game_over)
@@ -24,7 +26,7 @@ func _process(delta: float) -> void:
 		if _perfect_timer <= 0.0:
 			perfect_label.hide()
 
-func update_speed(speed: float) -> void:
+func _on_speed_changed(speed: float) -> void:
 	speed_label.text = "Speed: %d" % int(speed)
 
 func _on_score_changed(score: float) -> void:
@@ -45,11 +47,13 @@ func _on_bounced(is_perfect: bool) -> void:
 		perfect_label.show()
 		_perfect_timer = 0.7
 
-func _on_game_over() -> void:
+func _on_game_over(final_score: float) -> void:
 	game_over_panel.show()
+	game_over_label.text = "GAME OVER\nScore: %d\n\n[R] ou [Clic] pour recommencer" % int(final_score)
 
 func _on_game_started() -> void:
 	game_over_panel.hide()
 	perfect_label.hide()
 	score_label.text = "Score: 0"
 	combo_label.text = ""
+	speed_label.text = "Speed: 0"

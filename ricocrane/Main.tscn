@@ -1,0 +1,84 @@
+[gd_scene load_steps=6 format=3 uid="uid://bmainn0001"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_main01"]
+[ext_resource type="PackedScene" uid="uid://bplayerx001" path="res://Player.tscn" id="2_playsc"]
+[ext_resource type="Script" path="res://spawner.gd" id="3_spawn1"]
+[ext_resource type="Script" path="res://hud.gd" id="4_hud001"]
+[ext_resource type="PackedScene" uid="uid://bskull00001" path="res://Skull.tscn" id="5_skull1"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_main01")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(400.0, 300.0)
+
+[node name="DeathWallVisual" type="Polygon2D" parent="."]
+
+[node name="SkullContainer" type="Node2D" parent="."]
+
+[node name="Player" parent="." instance=ExtResource("2_playsc")]
+position = Vector2(200.0, 350.0)
+
+[node name="Spawner" type="Node" parent="."]
+script = ExtResource("3_spawn1")
+skull_scene = ExtResource("5_skull1")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+script = ExtResource("4_hud001")
+
+[node name="ScoreLabel" type="Label" parent="HUD"]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 310.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 24
+text = "Score: 0"
+
+[node name="SpeedLabel" type="Label" parent="HUD"]
+offset_left = 10.0
+offset_top = 55.0
+offset_right = 310.0
+offset_bottom = 95.0
+theme_override_font_sizes/font_size = 20
+text = "Speed: 0"
+
+[node name="ComboLabel" type="Label" parent="HUD"]
+offset_left = 440.0
+offset_top = 10.0
+offset_right = 840.0
+offset_bottom = 75.0
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+text = ""
+
+[node name="PerfectLabel" type="Label" parent="HUD"]
+visible = false
+offset_left = 490.0
+offset_top = 280.0
+offset_right = 790.0
+offset_bottom = 360.0
+theme_override_font_sizes/font_size = 48
+horizontal_alignment = 1
+modulate = Color(1.0, 0.9, 0.0, 1.0)
+text = "PARFAIT!"
+
+[node name="GameOverPanel" type="Panel" parent="HUD"]
+visible = false
+offset_left = 290.0
+offset_top = 230.0
+offset_right = 990.0
+offset_bottom = 490.0
+
+[node name="GameOverLabel" type="Label" parent="HUD/GameOverPanel"]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+theme_override_font_sizes/font_size = 28
+horizontal_alignment = 1
+vertical_alignment = 1
+text = "GAME OVER"

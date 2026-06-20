@@ -13,7 +13,6 @@ extends Node2D
 @onready var skull_container: Node2D = $SkullContainer
 @onready var spawner: Spawner = $Spawner
 @onready var camera: Camera2D = $Camera2D
-@onready var hud: HUD = $HUD
 @onready var death_wall_poly: Polygon2D = $DeathWallVisual
 
 var _death_wall_x: float = 0.0
@@ -29,6 +28,7 @@ func _ready() -> void:
 	death_wall_poly.color = Color(0.9, 0.1, 0.1, 0.85)
 	spawner.setup(skull_container, start_player_x)
 	_start_game()
+	queue_redraw()
 
 func _start_game() -> void:
 	player.position = Vector2(start_player_x, start_player_y)
@@ -48,7 +48,7 @@ func _process(delta: float) -> void:
 			_check_skull_bounces()
 			_check_game_over()
 			_update_camera()
-			hud.update_speed(player.current_speed)
+			GameState.report_speed(player.current_speed)
 			GameState.add_distance(player.current_speed * delta)
 		GameState.State.DEAD:
 			_update_camera()
@@ -69,6 +69,13 @@ func _input(event: InputEvent) -> void:
 		if event is InputEventMouseButton and event.pressed \
 				and event.button_index == MOUSE_BUTTON_LEFT:
 			_start_game()
+
+func _draw() -> void:
+	var wy: float = player.water_line_y
+	# Ocean
+	draw_rect(Rect2(-5000.0, wy, 60000.0, 500.0), Color(0.0, 0.25, 0.7, 0.55))
+	# Sky
+	draw_rect(Rect2(-5000.0, -600.0, 60000.0, wy + 600.0), Color(0.35, 0.65, 0.95, 0.2))
 
 func _update_death_wall(delta: float) -> void:
 	_death_wall_x += death_wall_speed * delta
@@ -102,5 +109,5 @@ func _update_camera() -> void:
 	camera.position.x = player.position.x + camera_x_offset
 	camera.position.y = camera_y
 
-func _on_game_over() -> void:
+func _on_game_over(_final_score: float) -> void:
 	pass
