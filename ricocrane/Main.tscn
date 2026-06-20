@@ -1,10 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://bmainn0001"]
+[gd_scene load_steps=10 format=3 uid="uid://bmainn0001"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_main01"]
 [ext_resource type="PackedScene" uid="uid://bplayerx001" path="res://Player.tscn" id="2_playsc"]
 [ext_resource type="Script" path="res://spawner.gd" id="3_spawn1"]
 [ext_resource type="Script" path="res://hud.gd" id="4_hud001"]
 [ext_resource type="PackedScene" uid="uid://bskull00001" path="res://Skull.tscn" id="5_skull1"]
+[ext_resource type="PackedScene" uid="uid://bmine00001" path="res://obstacles/Mine.tscn" id="6_mine1"]
+[ext_resource type="PackedScene" uid="uid://bbuoy00001" path="res://obstacles/Buoy.tscn" id="7_buoy1"]
+[ext_resource type="PackedScene" uid="uid://bwhirl0001" path="res://obstacles/Whirlpool.tscn" id="8_whirl"]
+[ext_resource type="PackedScene" uid="uid://bghost0001" path="res://obstacles/GhostJetski.tscn" id="9_ghost"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_main01")
@@ -16,12 +20,15 @@ position = Vector2(400.0, 300.0)
 
 [node name="SkullContainer" type="Node2D" parent="."]
 
+[node name="ObstacleContainer" type="Node2D" parent="."]
+
 [node name="Player" parent="." instance=ExtResource("2_playsc")]
 position = Vector2(200.0, 350.0)
 
 [node name="Spawner" type="Node" parent="."]
 script = ExtResource("3_spawn1")
 skull_scene = ExtResource("5_skull1")
+obstacle_scenes = Array[PackedScene]([ExtResource("6_mine1"), ExtResource("7_buoy1"), ExtResource("8_whirl"), ExtResource("9_ghost")])
 
 [node name="HUD" type="CanvasLayer" parent="."]
 script = ExtResource("4_hud001")

@@ -1,5 +1,5 @@
 class_name GhostJetski
-extends Node2D
+extends Obstacle
 
 # --- TUNING ---
 @export var width: float = 58.0
@@ -7,8 +7,6 @@ extends Node2D
 @export var drift_speed: float = -45.0
 @export var bob_frequency: float = 0.7
 @export var bob_amplitude: float = 6.0
-
-signal hit
 
 var _base_y: float = 0.0
 var _time: float = 0.0

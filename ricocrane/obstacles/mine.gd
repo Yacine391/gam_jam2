@@ -1,12 +1,10 @@
 class_name Mine
-extends Node2D
+extends Obstacle
 
 # --- TUNING ---
 @export var radius: float = 22.0
 @export var spike_count: int = 8
 @export var spike_length: float = 8.0
-
-signal hit
 
 func check_hit(player_pos: Vector2, player_half_w: float, player_half_h: float) -> bool:
 	var dx: float = abs(player_pos.x - position.x)

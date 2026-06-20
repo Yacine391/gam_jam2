@@ -7,12 +7,13 @@ extends Node2D
 @export var min_speed: float = 50.0
 @export var gravity: float = 700.0
 @export var water_bounce_damping: float = 0.25
-@export var dive_force: float = 450.0
+@export var dive_force: float = 480.0
 @export var water_line_y: float = 500.0
 @export var player_width: float = 52.0
 @export var player_height: float = 22.0
-@export var bounce_boost_min: float = 70.0
-@export var bounce_boost_max: float = 200.0
+@export var bounce_boost_min: float = 130.0
+@export var bounce_boost_max: float = 260.0
+@export var bounce_vertical_multiplier: float = 2.2
 
 var current_speed: float = 0.0
 var velocity_y: float = 0.0
@@ -46,7 +47,7 @@ func dive() -> void:
 	velocity_y = dive_force
 
 func apply_bounce(boost: float) -> void:
-	velocity_y = -boost * 0.8
+	velocity_y = -boost * bounce_vertical_multiplier
 	current_speed += boost
 	_on_water = false
 
@@ -61,10 +62,7 @@ func get_bounce_boost(is_perfect: bool) -> float:
 func _draw() -> void:
 	var hw: float = player_width * 0.5
 	var hh: float = player_height * 0.5
-	# Jetski
 	draw_rect(Rect2(-hw, -hh, player_width, player_height), Color(1.0, 0.55, 0.0))
-	# Crab body
 	draw_circle(Vector2(0.0, -hh - 9.0), 9.0, Color(1.0, 0.2, 0.2))
-	# Crab eyes
 	draw_circle(Vector2(-5.0, -hh - 16.0), 2.5, Color(0.0, 0.0, 0.0))
 	draw_circle(Vector2(5.0, -hh - 16.0), 2.5, Color(0.0, 0.0, 0.0))

@@ -11,6 +11,7 @@ extends Node2D
 
 @onready var player: Player = $Player
 @onready var skull_container: Node2D = $SkullContainer
+@onready var obstacle_container: Node2D = $ObstacleContainer
 @onready var spawner: Spawner = $Spawner
 @onready var camera: Camera2D = $Camera2D
 @onready var death_wall_poly: Polygon2D = $DeathWallVisual
@@ -26,9 +27,8 @@ func _ready() -> void:
 		Vector2(-50.0,  900.0),
 	])
 	death_wall_poly.color = Color(0.9, 0.1, 0.1, 0.85)
-	spawner.setup(skull_container, start_player_x)
+	spawner.setup(skull_container, start_player_x, obstacle_container)
 	_start_game()
-	queue_redraw()
 
 func _start_game() -> void:
 	player.position = Vector2(start_player_x, start_player_y)
@@ -46,12 +46,14 @@ func _process(delta: float) -> void:
 			spawner.update(player.position.x)
 			_update_death_wall(delta)
 			_check_skull_bounces()
+			_check_obstacle_hits()
 			_check_game_over()
 			_update_camera()
 			GameState.report_speed(player.current_speed)
 			GameState.add_distance(player.current_speed * delta)
 		GameState.State.DEAD:
 			_update_camera()
+	queue_redraw()
 
 func _input(event: InputEvent) -> void:
 	if GameState.state == GameState.State.PLAYING:
@@ -72,10 +74,12 @@ func _input(event: InputEvent) -> void:
 
 func _draw() -> void:
 	var wy: float = player.water_line_y
-	# Ocean
-	draw_rect(Rect2(-5000.0, wy, 60000.0, 500.0), Color(0.0, 0.25, 0.7, 0.55))
-	# Sky
-	draw_rect(Rect2(-5000.0, -600.0, 60000.0, wy + 600.0), Color(0.35, 0.65, 0.95, 0.2))
+	var cx: float = camera.position.x
+	var margin: float = 1200.0
+	draw_rect(Rect2(cx - margin, -800.0, margin * 2.0, wy + 800.0), Color(0.42, 0.72, 1.0))
+	draw_rect(Rect2(cx - margin, wy, margin * 2.0, 600.0), Color(0.0, 0.32, 0.82))
+	draw_line(Vector2(cx - margin, wy), Vector2(cx + margin, wy),
+			Color(0.4, 0.75, 1.0), 3.0)
 
 func _update_death_wall(delta: float) -> void:
 	_death_wall_x += death_wall_speed * delta
@@ -97,6 +101,20 @@ func _check_skull_bounces() -> void:
 			var boost: float = player.get_bounce_boost(is_perfect)
 			player.apply_bounce(boost)
 			GameState.register_bounce(is_perfect)
+			return
+
+func _check_obstacle_hits() -> void:
+	var pp: Vector2 = player.position
+	var hw: float = player.player_width * 0.5
+	var hh: float = player.player_height * 0.5
+	for obs: Obstacle in obstacle_container.get_children():
+		if obs.check_hit(pp, hw, hh):
+			obs.hit.emit()
+			if obs.lethal:
+				GameState.trigger_game_over()
+			else:
+				player.current_speed = maxf(player.min_speed,
+						player.current_speed - obs.speed_penalty)
 			return
 
 func _check_game_over() -> void:

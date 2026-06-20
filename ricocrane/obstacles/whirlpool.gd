@@ -1,14 +1,17 @@
 class_name Whirlpool
-extends Node2D
+extends Obstacle
 
 # --- TUNING ---
 @export var pull_radius: float = 60.0
 @export var rotation_speed: float = 2.0
 @export var draw_rings: int = 3
-
-signal hit
+@export var drain_per_second: float = 60.0
 
 var _angle: float = 0.0
+
+func _ready() -> void:
+	lethal = false
+	speed_penalty = 0.0
 
 func _process(delta: float) -> void:
 	_angle += rotation_speed * delta

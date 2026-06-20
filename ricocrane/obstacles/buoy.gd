@@ -1,20 +1,19 @@
 class_name Buoy
-extends Node2D
+extends Obstacle
 
 # --- TUNING ---
 @export var width: float = 18.0
 @export var height: float = 36.0
 @export var bob_frequency: float = 0.9
 @export var bob_amplitude: float = 8.0
-@export var speed_penalty: float = 60.0
-
-signal hit
 
 var _base_y: float = 0.0
 var _time: float = 0.0
 var _phase: float = 0.0
 
 func _ready() -> void:
+	lethal = false
+	speed_penalty = 80.0
 	_base_y = position.y
 	_phase = randf_range(0.0, TAU)
 
