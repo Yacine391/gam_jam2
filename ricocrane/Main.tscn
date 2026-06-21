@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bmainn0001"]
+[gd_scene load_steps=13 format=3 uid="uid://bmainn0001"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_main01"]
 [ext_resource type="PackedScene" uid="uid://bplayerx001" path="res://Player.tscn" id="2_playsc"]
@@ -9,6 +9,9 @@
 [ext_resource type="PackedScene" uid="uid://bbuoy00001" path="res://obstacles/Buoy.tscn" id="7_buoy1"]
 [ext_resource type="PackedScene" uid="uid://bwhirl0001" path="res://obstacles/Whirlpool.tscn" id="8_whirl"]
 [ext_resource type="PackedScene" uid="uid://bghost0001" path="res://obstacles/GhostJetski.tscn" id="9_ghost"]
+[ext_resource type="PackedScene" uid="uid://dtitle00001" path="res://ui/TitleOverlay.tscn" id="10_title"]
+[ext_resource type="PackedScene" uid="uid://dcombod0001" path="res://ui/ComboDisplay.tscn" id="11_combo"]
+[ext_resource type="PackedScene" uid="uid://djuicem0001" path="res://fx/JuiceManager.tscn" id="12_juice"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_main01")
@@ -89,3 +92,9 @@ theme_override_font_sizes/font_size = 28
 horizontal_alignment = 1
 vertical_alignment = 1
 text = "GAME OVER"
+
+[node name="TitleOverlay" parent="." instance=ExtResource("10_title")]
+
+[node name="ComboDisplay" parent="." instance=ExtResource("11_combo")]
+
+[node name="JuiceManager" parent="." instance=ExtResource("12_juice")]
