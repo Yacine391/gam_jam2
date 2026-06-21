@@ -92,6 +92,10 @@ var chicken_tex: Texture2D
 var ilyas_tex: Texture2D
 
 func _ready() -> void:
+	set_process_input(true)
+	get_tree().paused = false
+	Engine.time_scale = 1.0
+	GameState.reset_game()
 	rng.randomize()
 	chicken_tex = load("res://Gemini_Generated_Image_hbcexrhbcexrhbce.png")
 	ilyas_tex = load("res://ilias1.grosy@epitech.eu.jpg")
@@ -127,7 +131,8 @@ func _build_hud() -> void:
 	hud = CanvasLayer.new()
 	add_child(hud)
 	item_display = Control.new()
-	item_display.position = Vector2(1070, 500)
+	item_display.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
+	item_display.position = Vector2(-200, -200)
 	item_display.size = Vector2(180, 180)
 	item_display.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	item_display.pivot_offset = item_display.size * 0.5
@@ -821,8 +826,16 @@ func _input(event: InputEvent) -> void:
 		if key_event.pressed and not key_event.echo and key_event.keycode == KEY_SPACE and race_started and not race_finished:
 			_try_use_player_item()
 		if key_event.pressed and not key_event.echo and key_event.keycode == KEY_R:
-			_build_map()
-			_reset_race()
+			_restart_game()
+
+func _restart_game() -> void:
+	get_tree().paused = false
+	Engine.time_scale = 1.0
+	GameState.reset_game()
+	call_deferred("_reload_current_scene_safe")
+
+func _reload_current_scene_safe() -> void:
+	get_tree().reload_current_scene()
 
 func _try_use_player_item() -> void:
 	if item_roll_time > 0.0:

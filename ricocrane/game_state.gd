@@ -23,6 +23,14 @@ var distance: float = 0.0
 var race_position: int = 1
 var best_score: float = 0.0
 
+
+func reset_game() -> void:
+	state = State.IDLE
+	score = 0.0
+	combo = 0
+	distance = 0.0
+	race_position = 1
+
 func start_game() -> void:
 	state = State.PLAYING
 	score = 0.0
