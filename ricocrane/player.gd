@@ -14,6 +14,7 @@ extends Node2D
 @export var bounce_boost_min: float = 160.0
 @export var bounce_boost_max: float = 300.0
 @export var bounce_vertical_multiplier: float = 3.0
+@export var jetski_color: Color = Color(1.0, 0.55, 0.0)
 
 var current_speed: float = 0.0
 var velocity_y: float = 0.0
@@ -62,7 +63,41 @@ func get_bounce_boost(is_perfect: bool) -> float:
 func _draw() -> void:
 	var hw: float = player_width * 0.5
 	var hh: float = player_height * 0.5
-	draw_rect(Rect2(-hw, -hh, player_width, player_height), Color(1.0, 0.55, 0.0))
-	draw_circle(Vector2(0.0, -hh - 9.0), 9.0, Color(1.0, 0.2, 0.2))
-	draw_circle(Vector2(-5.0, -hh - 16.0), 2.5, Color(0.0, 0.0, 0.0))
-	draw_circle(Vector2(5.0, -hh - 16.0), 2.5, Color(0.0, 0.0, 0.0))
+	# Jetski hull (pointy front)
+	var hull_pts := PackedVector2Array([
+		Vector2(-hw, hh),
+		Vector2(hw + 8.0, hh),
+		Vector2(hw + 16.0, 0.0),
+		Vector2(hw + 8.0, -hh),
+		Vector2(-hw, -hh),
+	])
+	draw_colored_polygon(hull_pts, jetski_color)
+	# Hull stripe
+	draw_line(Vector2(-hw + 4.0, 0.0), Vector2(hw + 4.0, 0.0), Color(1.0, 0.8, 0.2, 0.5), 3.0)
+	# Windshield
+	draw_rect(Rect2(-hw * 0.2, -hh - 10.0, player_width * 0.45, 10.0), Color(0.5, 0.88, 1.0, 0.75))
+	# Wake trail
+	draw_line(Vector2(-hw, 4.0), Vector2(-hw - 28.0, 4.0), Color(1.0, 1.0, 1.0, 0.7), 3.0)
+	draw_line(Vector2(-hw, 8.0), Vector2(-hw - 18.0, 9.0), Color(1.0, 1.0, 1.0, 0.4), 2.0)
+	# Crab body
+	draw_circle(Vector2(0.0, -hh - 15.0), 12.0, Color(0.92, 0.18, 0.08))
+	# Crab shell highlight
+	draw_circle(Vector2(-3.0, -hh - 18.0), 5.0, Color(1.0, 0.35, 0.2, 0.5))
+	# Eye stalks + eyes
+	draw_line(Vector2(-5.0, -hh - 23.0), Vector2(-8.0, -hh - 29.0), Color(0.92, 0.18, 0.08), 2.0)
+	draw_circle(Vector2(-8.0, -hh - 30.0), 3.5, Color(0.05, 0.05, 0.05))
+	draw_circle(Vector2(-7.0, -hh - 30.5), 1.2, Color(1.0, 1.0, 1.0))
+	draw_line(Vector2(5.0, -hh - 23.0), Vector2(8.0, -hh - 29.0), Color(0.92, 0.18, 0.08), 2.0)
+	draw_circle(Vector2(8.0, -hh - 30.0), 3.5, Color(0.05, 0.05, 0.05))
+	draw_circle(Vector2(7.0, -hh - 30.5), 1.2, Color(1.0, 1.0, 1.0))
+	# Crab claws
+	draw_line(Vector2(-hw * 0.7, -hh - 10.0), Vector2(-hw - 14.0, -hh - 24.0), Color(0.92, 0.18, 0.08), 3.0)
+	draw_circle(Vector2(-hw - 14.0, -hh - 24.0), 6.0, Color(0.92, 0.18, 0.08))
+	draw_line(Vector2(-hw - 8.0, -hh - 22.0), Vector2(-hw - 18.0, -hh - 28.0), Color(0.92, 0.18, 0.08), 2.0)
+	draw_line(Vector2(hw * 0.7, -hh - 10.0), Vector2(hw + 14.0, -hh - 24.0), Color(0.92, 0.18, 0.08), 3.0)
+	draw_circle(Vector2(hw + 14.0, -hh - 24.0), 6.0, Color(0.92, 0.18, 0.08))
+	draw_line(Vector2(hw + 8.0, -hh - 22.0), Vector2(hw + 18.0, -hh - 28.0), Color(0.92, 0.18, 0.08), 2.0)
+	# Player indicator (white arrow above)
+	draw_line(Vector2(0.0, -hh - 46.0), Vector2(0.0, -hh - 54.0), Color(1.0, 1.0, 1.0, 0.9), 2.0)
+	draw_line(Vector2(-5.0, -hh - 49.0), Vector2(0.0, -hh - 54.0), Color(1.0, 1.0, 1.0, 0.9), 2.0)
+	draw_line(Vector2(5.0, -hh - 49.0), Vector2(0.0, -hh - 54.0), Color(1.0, 1.0, 1.0, 0.9), 2.0)
