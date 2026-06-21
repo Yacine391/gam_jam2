@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://dcombod0001"]
+
+[ext_resource type="Script" path="res://ui/combo_display.gd" id="1_combod"]
+
+[node name="ComboDisplay" type="CanvasLayer"]
+layer = 6
+script = ExtResource("1_combod")
