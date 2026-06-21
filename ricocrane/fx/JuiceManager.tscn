@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://djuicem0001"]
+
+[ext_resource type="Script" path="res://fx/juice_manager.gd" id="1_juicem"]
+[ext_resource type="Script" path="res://fx/speed_lines_drawer.gd" id="2_slines"]
+
+[node name="JuiceManager" type="Node"]
+script = ExtResource("1_juicem")
+
+[node name="SpeedLinesLayer" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="SpeedLinesDrawer" type="Node2D" parent="SpeedLinesLayer"]
+script = ExtResource("2_slines")
